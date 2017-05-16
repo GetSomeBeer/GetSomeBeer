@@ -15,6 +15,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".bomi.BomiActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".keit.KeitActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".rebecka.RebeckaActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
