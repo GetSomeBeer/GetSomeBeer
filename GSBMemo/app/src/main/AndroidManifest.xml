@@ -18,6 +18,7 @@
         <activity android:name=".bomi.BomiActivity" android:screenOrientation="portrait"/>
         <activity android:name=".keit.KeitActivity" android:screenOrientation="portrait"/>
         <activity android:name=".rebecka.RebeckaActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".rebecka.PopUpActivity" android:theme="@style/Theme.AppCompat.Dialog" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
