@@ -3,10 +3,16 @@ package winwin.study.gsbmemo.rebecka;
 import android.app.Activity;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import winwin.study.gsbmemo.R;
+import winwin.study.gsbmemo.rebecka.data.Data;
 
 /**
  * Created by Dongju on 2017. 5. 24..
@@ -14,6 +20,7 @@ import winwin.study.gsbmemo.R;
 
 public class PopUpActivity extends Activity {
 
+    // 바탕화면 터치시 팝업창 없어지지 않게 하려고 오버라이딩 한것
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
 
@@ -48,8 +55,40 @@ public class PopUpActivity extends Activity {
     }
 
     private void save(){
-        setResult(0);
-        finish();
+        EditText text = (EditText) findViewById(R.id.edit_text);
+
+        String str = String.valueOf(text.getText());
+
+
+//        if(str.length() < 0){
+            Log.e("","1111111111");
+            Toast.makeText(this,str,Toast.LENGTH_SHORT).show();
+            /*
+            * TODO
+            * 1. 데이타 있을 시 DB 등 데이터를 저장 하도록
+            *  2. 임시로 log light 형식으로 해놓겠음
+            *
+            * */
+            if(Common.datas == null){
+                Common.datas = new ArrayList<>();
+            }
+            int mId = Common.datas.size();
+
+            Data data = new Data();
+            data.setmId(String.valueOf(mId));
+            data.setmContents(str);
+
+            Common.datas.add(data);
+
+            setResult(0);
+            finish();
+//        }else{
+//            setResult(0);
+//            finish();
+//
+//        }
+
+
 
     }
     private void cancel(){

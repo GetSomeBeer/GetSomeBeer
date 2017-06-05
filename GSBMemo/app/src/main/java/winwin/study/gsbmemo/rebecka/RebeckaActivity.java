@@ -22,6 +22,9 @@ public class RebeckaActivity extends Activity implements View.OnClickListener {
     private ArrayList<Item> array = null;
     private int count;
     private final int REQUEST_CODE = 0000;
+
+    ListView listView;
+    ItemAdapter itemAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,8 +34,15 @@ public class RebeckaActivity extends Activity implements View.OnClickListener {
         setListener();
         init();
 
-        ListView listView = (ListView) findViewById(R.id.listView);
-        listView.setAdapter(new ItemAdapter());
+         listView = (ListView) findViewById(R.id.listView);
+        listView.setAdapter( itemAdapter = new ItemAdapter(RebeckaActivity.this,Common.datas));
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        itemAdapter.notifyDataSetChanged();
     }
 
     private void init() {
@@ -51,7 +61,11 @@ public class RebeckaActivity extends Activity implements View.OnClickListener {
         Log.e("TEST",resultCode+"");
 
         if(resultCode == 0){
-            Toast.makeText(RebeckaActivity.this,"SAVE ==",Toast.LENGTH_SHORT).show();
+            Toast.makeText(RebeckaActivity.this,"SAVE =="+Common.datas,Toast.LENGTH_SHORT).show();
+
+
+            listView.setAdapter( itemAdapter = new ItemAdapter(RebeckaActivity.this,Common.datas));
+//            itemAdapter.notifyDataSetChanged();
         }else{
             Toast.makeText(RebeckaActivity.this,"CANCLE ==",Toast.LENGTH_SHORT).show();
 
