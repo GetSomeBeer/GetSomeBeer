@@ -12,6 +12,8 @@ import java.util.ArrayList;
 
 import winwin.study.gsbmemo.R;
 import winwin.study.gsbmemo.rebecka.adapter.ItemAdapter;
+import winwin.study.gsbmemo.rebecka.data.Data;
+import winwin.study.gsbmemo.rebecka.data.JPreference;
 
 /**
  * Created by Dongju on 2017. 5. 16..
@@ -25,17 +27,18 @@ public class RebeckaActivity extends Activity implements View.OnClickListener {
 
     ListView listView;
     ItemAdapter itemAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Common.RContext = this;
         setContentView(R.layout.activity_rebecka);
 
         setListener();
         init();
 
-         listView = (ListView) findViewById(R.id.listView);
-        listView.setAdapter( itemAdapter = new ItemAdapter(RebeckaActivity.this,Common.datas));
+        listView = (ListView) findViewById(R.id.listView);
+        listView.setAdapter(itemAdapter = new ItemAdapter(RebeckaActivity.this, Common.datas));
 
     }
 
@@ -46,7 +49,37 @@ public class RebeckaActivity extends Activity implements View.OnClickListener {
     }
 
     private void init() {
-        count = 0;
+//        count = 0;
+
+        String str = JPreference.loadString(Common.RContext,"size");
+
+        int length = 0;
+        if(str == null || str.equalsIgnoreCase("")){
+            return;
+        }else{
+            length = Integer.parseInt(str);
+
+        }
+
+
+        if(length == 0 ){
+            return;
+        }
+        if (Common.datas == null) {
+            Common.datas = new ArrayList<>();
+        }
+        for(int i = 0; i < length; i++){
+
+//            JPreference.loadString(Common.RContext,"key"+i);
+            Log.e("item", JPreference.loadString(Common.RContext,"key"+i));
+
+            Data data = new Data();
+            data.setmId(String.valueOf(i));
+            data.setmContents(JPreference.loadString(Common.RContext,"key"+i));
+
+            Common.datas.add(data);
+
+        }
     }
 
     private void setListener() {
@@ -58,16 +91,14 @@ public class RebeckaActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        Log.e("TEST",resultCode+"");
+        Log.e("TEST", resultCode + "");
 
-        if(resultCode == 0){
-            Toast.makeText(RebeckaActivity.this,"SAVE =="+Common.datas,Toast.LENGTH_SHORT).show();
-
-
-            listView.setAdapter( itemAdapter = new ItemAdapter(RebeckaActivity.this,Common.datas));
+        if (resultCode == 0) {
+            Toast.makeText(RebeckaActivity.this, "SAVED", Toast.LENGTH_SHORT).show();
+            listView.setAdapter(itemAdapter = new ItemAdapter(RebeckaActivity.this, Common.datas));
 //            itemAdapter.notifyDataSetChanged();
-        }else{
-            Toast.makeText(RebeckaActivity.this,"CANCLE ==",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(RebeckaActivity.this, "CANCLE", Toast.LENGTH_SHORT).show();
 
         }
 
@@ -76,28 +107,18 @@ public class RebeckaActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.create:
-                Intent intent = new Intent(this,PopUpActivity.class);
-                startActivityForResult(intent,REQUEST_CODE);
+                Intent intent = new Intent(this, PopUpActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
 
-//                if(array == null || array.size() < 0){
-//                    array = new ArrayList<>();
-//                }
-//                count += count + 1;
-//                Item item = new Item();
-//                item.setCount(""+count);
-//
-//
-//                array.add(item);
-
-            break;
+                break;
             case R.id.delete:
 
-            break;
+                break;
             case R.id.search:
 
-            break;
+                break;
 
         }
     }

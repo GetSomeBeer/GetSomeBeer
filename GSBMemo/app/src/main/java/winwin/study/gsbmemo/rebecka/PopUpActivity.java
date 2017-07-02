@@ -3,7 +3,6 @@ package winwin.study.gsbmemo.rebecka;
 import android.app.Activity;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -13,6 +12,7 @@ import java.util.ArrayList;
 
 import winwin.study.gsbmemo.R;
 import winwin.study.gsbmemo.rebecka.data.Data;
+import winwin.study.gsbmemo.rebecka.data.JPreference;
 
 /**
  * Created by Dongju on 2017. 5. 24..
@@ -26,7 +26,7 @@ public class PopUpActivity extends Activity {
 
         Rect rect = new Rect();
         getWindow().getDecorView().getHitRect(rect);
-        if(!rect.contains((int)ev.getX(),(int)ev.getY())){
+        if (!rect.contains((int) ev.getX(), (int) ev.getY())) {
 
             return false;
         }
@@ -37,6 +37,7 @@ public class PopUpActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
+        //TODO 현재 메모장 역할하는 PopupActivity size 하드코딩 픽스 해놓은 상태  = > 동적으로 수정시키기 .
 
         findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,52 +50,53 @@ public class PopUpActivity extends Activity {
         findViewById(R.id.save).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              save();
+                save();
             }
         });
     }
 
-    private void save(){
+    private void save() {
         EditText text = (EditText) findViewById(R.id.edit_text);
 
         String str = String.valueOf(text.getText());
 
+        if (str.length() < 0 || str.equalsIgnoreCase("")) {
+            Toast.makeText(this, "NO DATA", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-//        if(str.length() < 0){
-            Log.e("","1111111111");
-            Toast.makeText(this,str,Toast.LENGTH_SHORT).show();
-            /*
-            * TODO
-            * 1. 데이타 있을 시 DB 등 데이터를 저장 하도록
-            *  2. 임시로 log light 형식으로 해놓겠음
-            *
-            * */
-            if(Common.datas == null){
-                Common.datas = new ArrayList<>();
-            }
-            int mId = Common.datas.size();
+//        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+        /*
+        * TODO
+        * 1. 데이타 있을 시 DB 등 데이터를 저장 하도록
+        *  2. 임시로 log light 형식으로 해놓겠음
+        *
+        * */
 
-            Data data = new Data();
-            data.setmId(String.valueOf(mId));
-            data.setmContents(str);
+        if (Common.datas == null) {
+            Common.datas = new ArrayList<>();
+        }
+        int mId = Common.datas.size();
 
-            Common.datas.add(data);
+        Data data = new Data();
+        data.setmId(String.valueOf(mId));
+        data.setmContents(str);
 
-            setResult(0);
-            finish();
-//        }else{
-//            setResult(0);
-//            finish();
-//
-//        }
+        Common.datas.add(data);
 
+        JPreference.saveString(Common.RContext,"key"+mId,str);
+        JPreference.saveString(Common.RContext,"size",(mId+1)+"");
 
+        setResult(0);
+        finish();
 
     }
-    private void cancel(){
+
+    private void cancel() {
         setResult(-1);
         finish();
     }
+
     @Override
     public void onBackPressed() {
         cancel();

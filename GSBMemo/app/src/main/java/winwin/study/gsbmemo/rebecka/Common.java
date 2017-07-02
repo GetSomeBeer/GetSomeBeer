@@ -1,5 +1,7 @@
 package winwin.study.gsbmemo.rebecka;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 
 import winwin.study.gsbmemo.rebecka.data.Data;
@@ -10,4 +12,5 @@ import winwin.study.gsbmemo.rebecka.data.Data;
 
 public class Common {
     public static ArrayList<Data> datas  = new ArrayList<>();
+    public static Context RContext = null;
 }
